@@ -1,45 +1,55 @@
-const express  = require('express')
+const express = require('express')
+const expressLayouts = require('express-ejs-layouts')
 const app = express()
 const port = 3000
 
-app.get('/', (req,res)=>{
-    // res.send('Hello World!!')
-    // res.json({
-    //     'nama':'Sandi',
-    //     'umur':23,
-    //     'hobi':'jalan-jalan'
-    // })
-    res.sendFile('./index.html', {root: __dirname})
+
+//menggunakan ejs
+
+app.set('view engine', 'ejs')
+app.use(expressLayouts)
+
+app.get('/', (req, res) => {
+    const mahasiswa = [
+        {
+            nama: 'Dwi Sandi',
+            email: 'sandi@mail.com'
+        },
+        {
+            nama: 'Achmad',
+            email: 'achmad@mail.com'
+        },
+        {
+            nama: 'Bambang P',
+            email: 'bamp@mail.com'
+        },
+    ]
+    res.render('index', { nama: 'Sandi YS', layout: 'layouts/main', title: 'Page Home', mahasiswa })
 })
-app.get('/about', (req,res)=>{
-    // res.send('Hello World!!')
-    // res.json({
-    //     'nama':'Sandi',
-    //     'umur':23,
-    //     'hobi':'jalan-jalan'
-    // })
-    res.sendFile('./about.html', {root: __dirname})
+app.get('/about', (req, res) => {
+    res.render('about', {
+        layout: 'layouts/main',
+        title: 'Halaman About'
+    })
+
 })
-app.get('/contact', (req,res)=>{
-    // res.send('Hello World!!')
-    // res.json({
-    //     'nama':'Sandi',
-    //     'umur':23,
-    //     'hobi':'jalan-jalan'
-    // })
-    res.sendFile('./contact.html', {root: __dirname})
+app.get('/contact', (req, res) => {
+    res.render('contact', {
+        layout: 'layouts/main',
+        title: 'Halaman contact'
+    })
 })
 
-app.get('/product/:id', (req,res)=>{
+app.get('/product/:id', (req, res) => {
     res.send(`Product ID : ${req.params.id} <br> Category  : ${req.query.category}`)
 })
 
 
-app.use('/', (req,res)=>{
+app.use('/', (req, res) => {
     res.status(404)
     res.send('404')
 })
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log(`Example app listening on http://localhost:${port}`)
 })
 
